@@ -51,6 +51,7 @@ module Globalize
       protected
       def setup_translates!(options)
         options[:table_name] ||= "#{table_name.singularize}_translations"
+        options[:order] ||= "id ASC"
         options[:foreign_key] ||= class_name.foreign_key
 
         class_attribute :translated_attribute_names, :translation_options, :fallbacks_for_empty_translations
@@ -64,6 +65,7 @@ module Globalize
         translation_class.table_name = options[:table_name]
 
         has_many :translations, :class_name  => translation_class.name,
+                                :order       => options[:order],
                                 :foreign_key => options[:foreign_key],
                                 :dependent   => :destroy,
                                 :extend      => HasManyExtensions
